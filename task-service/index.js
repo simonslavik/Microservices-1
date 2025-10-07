@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const app = express()
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 app.use(bodyParser.json());
 
@@ -29,11 +29,11 @@ const taskSchema = new mongoose.Schema({
 const Task = mongoose.model("Task", taskSchema);
 
 app.post("/tasks", async (req, res) => {
-  const { title, description } = req.body;
-  if (!title || !description) {
-    return res.status(400).send("Title and description are required");
-  } 
-  const task = new Task({ title, description });
+  const { title, description, userId } = req.body;
+  if (!title || !description || !userId) {
+    return res.status(400).send("Title, description, and userId are required");
+  }
+  const task = new Task({ title, description, userId });
   await task.save();
   res.status(201).send(task);
     
